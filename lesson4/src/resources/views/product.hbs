@@ -1,0 +1,9 @@
+<div class="p-5">
+    <h1 class="py-2">Product list</h1>
+    <div style="border: 1px solid black;">
+        {{#each products}}
+            <p>{{this.name}}</p>
+            <img src="{{this.image}}" alt="{{this.name}}" width="200">
+        {{/each}}
+    </div>
+</div>

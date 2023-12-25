@@ -1,0 +1,33 @@
+<style>
+    dt {
+        font-weight: bold;
+        padding-top: 1em;
+    }
+</style>
+<h2>Greeting</h2>
+<dl>
+
+    <dt>Message:</dt>
+    <dd>
+        {{message}}
+        <br/>
+    </dd>
+
+    <dt>Style:</dt>
+    <dd>
+        {{style}}
+        <br/>(Example: <a href="/greeting/?style=fancy">/greeting/?style=fancy</a>)
+    </dd>
+
+    <dt>User ID (from cookie):</dt>
+    <dd>
+        {{userid}}
+        <br/>(Click: <a href="/set-random-userid">here</a> to change randomly)
+    </dd>
+
+    <dt>Username (from session):</dt>
+    <dd>
+        {{username}}
+        <br/>(Click: <a href="/set-random-username">here</a> to change randomly)
+    </dd>
+</dl>

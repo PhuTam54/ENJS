@@ -15,6 +15,17 @@ app.get('/api/students', (req, res) => {
     res.json(students)
 })
 
+app.get('/api/student/:id', (req, res) => {
+    const student = students.find(student => student.id === parseInt(req.params.id))
+    if (!student) return res.status(410).json({ error: "No such student exists" })
+
+    if (!req.body) {
+        return res.status(400).json({ error: "Invalid request body" });
+    }
+
+    res.json(student)
+})
+
 app.post('/api/student', (req, res) => {
     if (!req.body) {
         return res.status(400).json({ error: "Invalid request body" });
@@ -53,7 +64,6 @@ app.put('/api/student/:id', (req, res) => {
 
     res.json({ success: true })
 })
-
 
 app.delete('/api/student/:id', (req, res) => {
     const idx = students.findIndex(student => student.id === parseInt(req.params.id))

@@ -2,6 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 // Define schema
 const Product = require('./app/models/Product')
+const Blog = require('./app/models/Blog')
 
 // Connect to DB
 const db = require('./config/db');
@@ -12,6 +13,7 @@ const port = process.env.PORT || 3000
 
 app.use(bodyParser.json())
 
+// products
 app.get('/api/products', (req, res) => {
     Product.find()
         .then(products => {
@@ -66,8 +68,63 @@ app.delete('/api/product/:id', async (req, res) => {
     }
 })
 
+// blogs
+app.get('/api/blogs', (req, res) => {
+    Blog.find()
+        .then(blogs => {
+            res.json(blogs)
+            })
+        })
+
+app.get('/api/blog/:id', (req, res) => {
+    Blog.findById(req.params.id)
+        .then(blogs => {
+            res.json(blogs)
+            })
+        })
+
+app.post('/api/blog', async (req, res) => {
+    const formData = {...req.body}
+    try {
+        const newBlog = new Blog(formData)
+        const savedBlog = await newBlog.save()
+        res.json(savedBlog)
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+})
+
+app.put('/api/blog/:id', async (req, res) => {
+    const { name, price, qty } = req.body
+    try {
+        const updatedBlog = await Blog.findByIdAndUpdate(
+            req.params.id,
+            { name, price, qty },
+            { new: true }
+        )
+        if (!updatedBlog) {
+            return res.status(400).json({ error: 'Blog not found' });
+        }
+        res.json(updatedBlog)
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+})
+
+app.delete('/api/blog/:id', async (req, res) => {
+    try {
+        const deletedBlog = await Blog.findByIdAndDelete(req.params.id,)
+        if (!deletedBlog) {
+            return res.status(400).json({ error: 'Blog not found' });
+        }
+        res.json(deletedBlog)
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+})
+
 app.get('*', (req, res) => {
-    res.send('check out <a href="/api/products">api/products</a>!')
+    res.send('check out <a href="/api/blogs">api/blogs</a>!')
 })
 
 app.listen(port, () => 

@@ -94,18 +94,10 @@ app.post('/api/blog', async (req, res) => {
     }
 })
 
-app.put('/api/blog/:id', async (req, res) => {
-    const { name, price, qty } = req.body
+app.put('/api/blog/:id', (req, res) => {
     try {
-        const updatedBlog = await Blog.findByIdAndUpdate(
-            req.params.id,
-            { name, price, qty },
-            { new: true }
-        )
-        if (!updatedBlog) {
-            return res.status(400).json({ error: 'Blog not found' });
-        }
-        res.json(updatedBlog)
+        Blog.updateOne({ _id: req.params.id }, req.body)
+            .then(res.send("Successfully"))
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
